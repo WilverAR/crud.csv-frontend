@@ -1,0 +1,28 @@
+<div class="container">
+  <p-table [columns]="cols" [value]="transactions" [tableStyle]="{ 'min-width': '50rem' }"
+           (onPage)="onPageChange($event)"
+           [paginator]="true"
+           [first]="first"
+           [rows]="rows"
+           [totalRecords]="totalRecords"
+           [rowsPerPageOptions]="[5, 10, 15]">
+
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{ col.header }}
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns">
+          {{ rowData[col.field] }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+
