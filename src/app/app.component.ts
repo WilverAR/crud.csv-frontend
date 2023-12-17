@@ -1,9 +1,8 @@
-import {Component, NgModule} from '@angular/core';
+import {Component} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import {HeaderComponent} from "./shared/components/header/header.component";
 import {FooterComponent} from "./shared/components/footer/footer.component";
-import {HttpClientModule} from "@angular/common/http";
 
 @Component({
   selector: 'app-root',
