@@ -1,0 +1,18 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+p-table {
+  border-radius: 10px;
+  overflow: hidden;
+  min-width: 95%;
+}
+
+::ng-deep .p-paginator {
+  border-radius: 0 0 10px 10px;
+  margin-top: 10px;
+}
