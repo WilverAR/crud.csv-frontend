@@ -1,6 +1,6 @@
 .container {
   width: 100vw;
-  height: 100vh;
+  height: 85vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,6 +13,14 @@ p-table {
 }
 
 ::ng-deep .p-paginator {
-  border-radius: 0 0 10px 10px;
+  border-radius: 0;
   margin-top: 10px;
 }
+
+#card {
+  position: fixed;
+  bottom: 100px;
+  left: 50px;
+}
+
+

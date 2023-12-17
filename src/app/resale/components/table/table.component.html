@@ -1,11 +1,27 @@
 <div class="container">
-  <p-table [columns]="cols" [value]="transactions" [tableStyle]="{ 'min-width': '50rem' }"
+  <p-toast></p-toast>
+  <!--
+  <p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="left">
+      <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+      <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+      <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+      <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+    </ng-template>
+  </p-toolbar>
+-->
+  <p-table #dt [columns]="cols" [value]="transactions" dataKey="id" [tableStyle]="{ 'min-width': '50rem' }"
            (onPage)="onPageChange($event)"
            [paginator]="true"
            [first]="first"
            [rows]="rows"
            [totalRecords]="totalRecords"
-           [rowsPerPageOptions]="[5, 10, 15]">
+           [rowsPerPageOptions]="[5, 10, 15]"
+           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+           [showCurrentPageReport]="true">
 
     <ng-template pTemplate="header" let-columns>
       <tr>
@@ -20,9 +36,100 @@
         <td *ngFor="let col of columns">
           {{ rowData[col.field] }}
         </td>
+        <td>
+          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(rowData)"></button>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(rowData)"></button>
+        </td>
       </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">In total there are {{ transactions ? transactions.length : 0 }} transactions.</div>
     </ng-template>
   </p-table>
 </div>
+
+<div id="card">
+    <p-toast></p-toast>
+    <p-speedDial [model]="item" direction="right" ></p-speedDial>
+</div>
+
+<p-dialog [(visible)]="transactionDialog" [style]="{ width: '500px' }" header="Transaction Details" [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="field">
+      <label for="month">Month</label>
+      <input type="text" pInputText id="month" [(ngModel)]="transaction.month" required autofocus />
+      <small class="p-error" *ngIf="submitted && !transaction.month">Name is required.</small>
+    </div>
+    <div class="field">
+      <label for="town">Town</label>
+      <input type="text" pInputText id="town" [(ngModel)]="transaction.town" required autofocus />
+      <small class="p-error" *ngIf="submitted && !transaction.town">Name is required.</small>
+    </div>
+    <div class="field">
+      <label for="flatType">Flat Type</label>
+      <input type="text" pInputText id="flatType" [(ngModel)]="transaction.flatType" required autofocus />
+      <small class="p-error" *ngIf="submitted && !transaction.flatType">Name is required.</small>
+    </div>
+    <div class="field">
+      <label for="block">Block</label>
+      <input type="text" pInputText id="block" [(ngModel)]="transaction.block" required autofocus />
+      <small class="p-error" *ngIf="submitted && !transaction.block">Name is required.</small>
+    </div>
+    <div class="field">
+      <label for="streetName">Street Name</label>
+      <input type="text" pInputText id="streetName" [(ngModel)]="transaction.streetName" required autofocus />
+      <small class="p-error" *ngIf="submitted && !transaction.streetName">Name is required.</small>
+    </div>
+    <div class="field">
+      <label for="storeyRange">Storey Range</label>
+      <input type="text" pInputText id="storeyRange" [(ngModel)]="transaction.storeyRange" required autofocus />
+      <small class="p-error" *ngIf="submitted && !transaction.storeyRange">Name is required.</small>
+    </div>
+    <div class="field">
+      <label for="floorAreaSqm">Floor Area Sqm</label>
+      <input type="text" pInputText id="floorAreaSqm" [(ngModel)]="transaction.floorAreaSqm" required autofocus />
+      <small class="p-error" *ngIf="submitted && !transaction.floorAreaSqm">Name is required.</small>
+    </div>
+    <div class="field">
+      <label for="flatModel">Flat Model</label>
+      <input type="text" pInputText id="flatModel" [(ngModel)]="transaction.flatModel" required autofocus />
+      <small class="p-error" *ngIf="submitted && !transaction.flatModel">Name is required.</small>
+    </div>
+    <div class="field">
+      <label for="leaseCommenceDate">Lease Commence Date</label>
+      <input type="text" pInputText id="leaseCommenceDate" [(ngModel)]="transaction.leaseCommenceDate" required autofocus />
+      <small class="p-error" *ngIf="submitted && !transaction.leaseCommenceDate">Name is required.</small>
+    </div>
+    <div class="field">
+      <label for="resalePrice">Resale Price</label>
+      <input type="text" pInputText id="resalePrice" [(ngModel)]="transaction.resalePrice" required autofocus />
+      <small class="p-error" *ngIf="submitted && !transaction.resalePrice">Name is required.</small>
+    </div>
+    <!--
+    <div class="field">
+      <label for="description">Description</label>
+      <textarea id="description" pInputTextarea [(ngModel)]="transaction.description" required rows="3" cols="20"></textarea>
+    </div>
+-->
+<!--
+    <div class="formgrid grid">
+      <div class="field col">
+        <label for="price">Price</label>
+        <p-inputNumber id="price" [(ngModel)]="transaction.price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+      </div>
+      <div class="field col">
+        <label for="quantity">Quantity</label>
+        <p-inputNumber id="quantity" [(ngModel)]="transaction.quantity"></p-inputNumber>
+      </div>
+    </div>
+    -->
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+  </ng-template>
+</p-dialog>
 
 
