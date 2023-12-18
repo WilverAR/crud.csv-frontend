@@ -1,0 +1,35 @@
+<!--
+<p-dialog [(visible)]="transactionDialog" [style]="{ width: '450px' }" header="Product Details" [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + transactions.image" [alt]="transactions.image" class="block m-auto pb-3" *ngIf="transactions.image" />
+    <div class="field">
+      <label for="name">Name</label>
+      <input type="text" pInputText id="name" [(ngModel)]="transactions.name" required autofocus />
+      <small class="p-error" *ngIf="submitted && !transactions.name">Name is required.</small>
+    </div>
+    <div class="field">
+      <label for="description">Description</label>
+      <textarea id="description" pInputTextarea [(ngModel)]="transactions.description" required rows="3" cols="20"></textarea>
+    </div>
+
+    <div class="formgrid grid">
+      <div class="field col">
+        <label for="price">Price</label>
+        <p-inputNumber id="price" [(ngModel)]="transactions.price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+      </div>
+      <div class="field col">
+        <label for="quantity">Quantity</label>
+        <p-inputNumber id="quantity" [(ngModel)]="transactions.quantity"></p-inputNumber>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+
+-->
