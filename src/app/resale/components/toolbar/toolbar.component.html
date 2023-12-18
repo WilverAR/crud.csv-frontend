@@ -1,11 +1,1 @@
-<p-toolbar styleClass="mb-4 gap-2">
-  <ng-template pTemplate="left">
-    <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-    <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
-  </ng-template>
 
-  <ng-template pTemplate="right">
-    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
-  </ng-template>
-</p-toolbar>
