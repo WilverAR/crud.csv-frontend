@@ -1,8 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {TableModule} from "primeng/table";
-import {Transaction} from "../../model/Transaction";
-import {TransactionService} from "../../services/transaction.service";
-import {formatDate, NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {PaginatorModule, PaginatorState} from "primeng/paginator";
 import {ToastModule} from "primeng/toast";
 import {ButtonModule} from "primeng/button";
@@ -11,12 +9,15 @@ import {FileUploadModule} from "primeng/fileupload";
 import {ToolbarModule} from "primeng/toolbar";
 import {DialogModule} from "primeng/dialog";
 import {InputTextModule} from "primeng/inputtext";
-import {ConfirmationService, MenuItem, MessageService} from "primeng/api";
 import {SpeedDialModule} from "primeng/speeddial";
-import FileSaver from 'file-saver';
 import {CalendarModule} from "primeng/calendar";
 import {KeyFilterModule} from "primeng/keyfilter";
 import {InputTextareaModule} from "primeng/inputtextarea";
+import {Transaction} from "../../model/transaction";
+import {TransactionService} from "../../services/transaction.service";
+import {ConfirmationService, MessageService} from "primeng/api";
+import {DialogComponent} from "../dialog/dialog.component";
+
 
 interface Column {
   field: string;
@@ -45,185 +46,58 @@ interface ExportColumn {
     SpeedDialModule,
     CalendarModule,
     KeyFilterModule,
-    InputTextareaModule
+    InputTextareaModule,
+    DialogComponent
   ],
   templateUrl: './table.component.html',
-  styleUrl: './table.component.css',
-  providers: [MessageService, ConfirmationService]
+  styleUrl: './table.component.css'
 })
-export class TableComponent implements OnInit {
-  transactions: Transaction[] = [];
-  transaction!: Transaction;
-  item!: MenuItem[];
-  cols: Column[] = [];
-  exportColumns!: ExportColumn[];
+export class TableComponent implements OnChanges {
+  @Input() transactions: Transaction[] = [];
+  @Input() columns: Column[] = [];
+  @Input() exportColumns!: ExportColumn[];
   first: number = 0;
   rows: number = 5;
-  totalRecords: number = 0;
+
+  @Input() totalRecords: number = this.transactions.length;
   transactionDialog: boolean = false;
   submitted: boolean = false;
-  loading: boolean = true;
-  constructor(private transactionService: TransactionService, private messageService: MessageService, private confirmationService: ConfirmationService) {}
-
-  ngOnInit() {
-    this.getAllTransactions();
-    this.item = [
-      {
-        icon: 'pi pi-download',
-        target:'_blank',
-        command: () => {
-          this.exportExcel();
-        }
-      },
-      {
-        icon: 'pi pi-trash',
-        command: () => {
-          this.messageService.add({ severity: 'error', summary: 'Delete', detail: 'Data Deleted' });
-        }
-      },
-      {
-        icon: 'pi pi-upload',
-        command: () => {
-          this.openNew();
-        }
-      },
-      {
-        icon: 'pi pi-refresh',
-        command: () => {
-          this.getAllTransactions();
-        }
-      },
-    ];
-  }
-
-  private getAllTransactions() {
-    this.transactionService.getAll().subscribe((response: any) => {
-      this.transactions = response;
-      this.totalRecords = this.transactions.length;
-      this.loading = false;
-    });
-    this.cols = [
-      { field: 'id', header: 'Id' },
-      { field: 'month', header: 'Month' },
-      { field: 'town', header: 'Town' },
-      { field: 'flatType', header: 'Flat Type' },
-      { field: 'block', header: 'Block' },
-      { field: 'streetName', header: 'Street Name' },
-      { field: 'storeyRange', header: 'Storey Range' },
-      { field: 'floorAreaSqm', header: 'Floor Area Sqm' },
-      { field: 'flatModel', header: 'Flat Model' },
-      { field: 'leaseCommenceDate', header: 'Lease Commence' },
-      { field: 'resalePrice', header: 'Resale Price' }
-    ];
-    this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
-  }
+  transaction!: Transaction;
+  @Input() loading: boolean = true;
 
   onPageChange(event: PaginatorState) {
     this.first = event.first || 0;
   }
+  constructor(private transactionService: TransactionService, private messageService: MessageService) { }
 
-  openNew() {
-    this.transaction = <Transaction>{};
-    this.submitted = false;
-    this.transactionDialog = true;
+  ngOnChanges(changes:SimpleChanges) {
+    console.log('Changes: ', changes);
+    this.totalRecords = this.transactions.length;
   }
-
   editProduct(transaction: any) {
     this.transaction = { ...transaction };
     console.log('Transaction: ', transaction);
     this.transactionDialog = true;
   }
-
   deleteProduct(transaction: any) {
     this.transaction = { ...transaction };
     this.transactionService.delete(this.transaction.id).subscribe((response: any) => {
       console.log('Response: ', response);
     });
     this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-    //this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-    /*
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected products?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.transaction = { ...transaction };
-        console.log('Transaction: ', transaction);
-        console.log('Transaction Id: ', this.transaction.id);
-        this.transactionService.delete(this.transaction.id).subscribe((response: any) => {
-          console.log('Response: ', response);
-        });
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-      }
-    });
-
-     */
   }
 
-  hideDialog() {
-    this.transactionDialog = false;
-    this.submitted = false;
+  onDisplayDialog($event: boolean) {
+    this.transactionDialog = $event;
   }
 
-  saveProduct() {
-    this.submitted = true;
-
-    if (this.isValidForm()) {
-      if (this.transaction.id) {
-        this.transactionService.update(this.transaction.id, this.transaction).subscribe((response: any) => {
-          console.log('Response: ', response);
-        });
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Transaction Updated', life: 3000 });
-      }
-      else {
-        this.transactionService.create(this.transaction).subscribe((response: any) => {
-          console.log('Response: ', response);
-        });
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Transaction Created', life: 3000 });
-      }
-      this.transactionDialog = false;
-    }
-    else {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid form. Please check your input.', life: 3000 });
-    }
+  onSubmittedDialog($event: boolean) {
+    this.submitted = $event;
   }
 
-  private exportPdf() {
-    import('jspdf').then((jsPDF) => {
-      import('jspdf-autotable').then((x) => {
-        const doc = new jsPDF.default('p', 'px', 'a4');
-        (doc as any).autoTable(this.exportColumns, this.transactions);
-        doc.save('products.pdf');
-      });
-    });
-  }
-
-  private exportExcel() {
-    import('xlsx').then((xlsx) => {
-      const worksheet = xlsx.utils.json_to_sheet(this.transactions);
-      const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
-      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-      this.saveAsExcelFile(excelBuffer, 'transactions');
-    });
-  }
-  private saveAsExcelFile(buffer: any, fileName: string): void {
-    let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-    let EXCEL_EXTENSION = '.xlsx';
-    const data: Blob = new Blob([buffer], {
-      type: EXCEL_TYPE
-    });
-    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
-  }
-
-  isValidForm() {
-    if (this.transaction.month) {
-      this.transaction.month = formatDate(this.transaction.month, 'yyyy-MM', 'en-US');
-    }
-    if (this.transaction.leaseCommenceDate) {
-      this.transaction.leaseCommenceDate = formatDate(this.transaction.leaseCommenceDate, 'yyyy', 'en-US');
-    }
-    console.log('Transaction Lease Commence Date: ', this.transaction.leaseCommenceDate);
-    console.log('Transaction Lease Commence Date: ', this.transaction.leaseCommenceDate);
-    return this.transaction.month && this.transaction.town && this.transaction.flatType && this.transaction.block && this.transaction.streetName && this.transaction.storeyRange && this.transaction.floorAreaSqm && this.transaction.flatModel && this.transaction.leaseCommenceDate && this.transaction.resalePrice;
+  onDisplay() {
+    this.transaction = <Transaction>{};
+    this.transactionDialog = true;
+    console.log('Transaction Dialog: ', this.transactionDialog);
   }
 }

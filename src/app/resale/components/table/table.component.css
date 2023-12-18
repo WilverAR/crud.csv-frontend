@@ -8,6 +8,7 @@
 
 p-table {
   border-radius: 10px;
+  width: 85%;
 }
 p-table td {
   /*font-size: 14px;*/
@@ -19,11 +20,7 @@ p-table td {
   margin-top: 10px;
 }
 
-#card {
-  position: fixed;
-  bottom: 100px;
-  left: 50px;
-}
+
 
 .p-button-success, .p-button-warning {
   margin-right: 5px;
