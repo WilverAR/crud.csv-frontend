@@ -15,14 +15,5 @@ import {RippleModule} from "primeng/ripple";
   styleUrl: './toolbar.component.css'
 })
 export class ToolbarComponent {
-  Delete: any;
-  selectedProducts: any | boolean;
 
-  openNew() {
-
-  }
-
-  deleteSelectedProducts() {
-
-  }
 }
