@@ -58,53 +58,51 @@
   <ng-template pTemplate="content">
     <div class="field">
       <label for="month">Month</label>
-      <input type="text" pInputText id="month" [(ngModel)]="transaction.month" required autofocus />
-      <small class="p-error" *ngIf="submitted && !transaction.month">Name is required.</small>
+      <p-calendar id="month" [(ngModel)]="transaction.month" view="month" dateFormat="yy-mm"></p-calendar>
     </div>
     <div class="field">
       <label for="town">Town</label>
-      <input type="text" pInputText id="town" [(ngModel)]="transaction.town" required autofocus />
-      <small class="p-error" *ngIf="submitted && !transaction.town">Name is required.</small>
+      <input type="text" pInputText id="town" [(ngModel)]="transaction.town" required/>
+      <small class="p-error" *ngIf="submitted && !transaction.town">Town is required.</small>
     </div>
     <div class="field">
       <label for="flatType">Flat Type</label>
-      <input type="text" pInputText id="flatType" [(ngModel)]="transaction.flatType" required autofocus />
-      <small class="p-error" *ngIf="submitted && !transaction.flatType">Name is required.</small>
+      <input type="text" pInputText id="flatType" [(ngModel)]="transaction.flatType" required />
+      <small class="p-error" *ngIf="submitted && !transaction.flatType">Flat Type is required.</small>
     </div>
     <div class="field">
       <label for="block">Block</label>
-      <input type="text" pInputText id="block" [(ngModel)]="transaction.block" required autofocus />
-      <small class="p-error" *ngIf="submitted && !transaction.block">Name is required.</small>
+      <input type="text" pInputText id="block" [(ngModel)]="transaction.block" required />
+      <small class="p-error" *ngIf="submitted && !transaction.block">Block is required.</small>
     </div>
     <div class="field">
       <label for="streetName">Street Name</label>
-      <input type="text" pInputText id="streetName" [(ngModel)]="transaction.streetName" required autofocus />
-      <small class="p-error" *ngIf="submitted && !transaction.streetName">Name is required.</small>
+      <input type="text" pInputText id="streetName" [(ngModel)]="transaction.streetName" required />
+      <small class="p-error" *ngIf="submitted && !transaction.streetName">Street Name is required.</small>
     </div>
     <div class="field">
       <label for="storeyRange">Storey Range</label>
-      <input type="text" pInputText id="storeyRange" [(ngModel)]="transaction.storeyRange" required autofocus />
-      <small class="p-error" *ngIf="submitted && !transaction.storeyRange">Name is required.</small>
+      <input type="text" pInputText id="storeyRange" [(ngModel)]="transaction.storeyRange" required />
+      <small class="p-error" *ngIf="submitted && !transaction.storeyRange">Storey Range is required.</small>
     </div>
     <div class="field">
       <label for="floorAreaSqm">Floor Area Sqm</label>
-      <input type="text" pInputText id="floorAreaSqm" [(ngModel)]="transaction.floorAreaSqm" required autofocus />
-      <small class="p-error" *ngIf="submitted && !transaction.floorAreaSqm">Name is required.</small>
+      <input type="number" pInputText id="floorAreaSqm" [(ngModel)]="transaction.floorAreaSqm" pattern="^[0-9]+$" required />
+      <small class="p-error" *ngIf="submitted && !transaction.floorAreaSqm">Floor area sqm must be a positive integer.</small>
     </div>
     <div class="field">
       <label for="flatModel">Flat Model</label>
-      <input type="text" pInputText id="flatModel" [(ngModel)]="transaction.flatModel" required autofocus />
-      <small class="p-error" *ngIf="submitted && !transaction.flatModel">Name is required.</small>
+      <input type="text" pInputText id="flatModel" [(ngModel)]="transaction.flatModel" required />
+      <small class="p-error" *ngIf="submitted && !transaction.flatModel">Flat Model is required.</small>
     </div>
     <div class="field">
-      <label for="leaseCommenceDate">Lease Commence Date</label>
-      <input type="text" pInputText id="leaseCommenceDate" [(ngModel)]="transaction.leaseCommenceDate" required autofocus />
-      <small class="p-error" *ngIf="submitted && !transaction.leaseCommenceDate">Name is required.</small>
+      <label for="year">Lease Commence Date</label>
+      <p-calendar id="year" [(ngModel)]="transaction.leaseCommenceDate" view="year" dateFormat="yy"></p-calendar>
     </div>
     <div class="field">
       <label for="resalePrice">Resale Price</label>
-      <input type="text" pInputText id="resalePrice" [(ngModel)]="transaction.resalePrice" required autofocus />
-      <small class="p-error" *ngIf="submitted && !transaction.resalePrice">Name is required.</small>
+      <input type="number" pInputText id="resalePrice" [(ngModel)]="transaction.resalePrice" pattern="^[1-9]\d*$" required />
+      <small class="p-error" *ngIf="submitted && !transaction.resalePrice">Resale price must be positive integer.</small>
     </div>
     <!--
     <div class="field">

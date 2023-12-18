@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TableModule} from "primeng/table";
 import {Transaction} from "../../model/Transaction";
 import {TransactionService} from "../../services/transaction.service";
-import {NgForOf, NgIf} from "@angular/common";
+import {formatDate, NgForOf, NgIf} from "@angular/common";
 import {PaginatorModule, PaginatorState} from "primeng/paginator";
 import {ToastModule} from "primeng/toast";
 import {ButtonModule} from "primeng/button";
@@ -14,6 +14,8 @@ import {InputTextModule} from "primeng/inputtext";
 import {ConfirmationService, MenuItem, MessageService} from "primeng/api";
 import {SpeedDialModule} from "primeng/speeddial";
 import FileSaver from 'file-saver';
+import {CalendarModule} from "primeng/calendar";
+import {KeyFilterModule} from "primeng/keyfilter";
 
 interface Column {
   field: string;
@@ -39,7 +41,9 @@ interface ExportColumn {
     DialogModule,
     InputTextModule,
     NgIf,
-    SpeedDialModule
+    SpeedDialModule,
+    CalendarModule,
+    KeyFilterModule
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css',
@@ -160,7 +164,7 @@ export class TableComponent implements OnInit {
   saveProduct() {
     this.submitted = true;
 
-    if (this.transaction.month?.trim()) {
+    if (this.isValidForm()) {
       if (this.transaction.id) {
         this.transactionService.update(this.transaction.id, this.transaction).subscribe((response: any) => {
           console.log('Response: ', response);
@@ -173,8 +177,10 @@ export class TableComponent implements OnInit {
         });
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Transaction Created', life: 3000 });
       }
-      this.transactions = [...this.transactions];
       this.transactionDialog = false;
+    }
+    else {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid form. Please check your input.', life: 3000 });
     }
   }
 
@@ -203,5 +209,17 @@ export class TableComponent implements OnInit {
       type: EXCEL_TYPE
     });
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
+
+  isValidForm() {
+    if (this.transaction.month) {
+      this.transaction.month = formatDate(this.transaction.month, 'yyyy-MM', 'en-US');
+    }
+    if (this.transaction.leaseCommenceDate) {
+      this.transaction.leaseCommenceDate = formatDate(this.transaction.leaseCommenceDate, 'yyyy', 'en-US');
+    }
+    console.log('Transaction Lease Commence Date: ', this.transaction.leaseCommenceDate);
+    console.log('Transaction Lease Commence Date: ', this.transaction.leaseCommenceDate);
+    return this.transaction.month && this.transaction.town && this.transaction.flatType && this.transaction.block && this.transaction.streetName && this.transaction.storeyRange && this.transaction.floorAreaSqm && this.transaction.flatModel && this.transaction.leaseCommenceDate && this.transaction.resalePrice;
   }
 }
