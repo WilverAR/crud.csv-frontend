@@ -16,6 +16,7 @@ import {SpeedDialModule} from "primeng/speeddial";
 import FileSaver from 'file-saver';
 import {CalendarModule} from "primeng/calendar";
 import {KeyFilterModule} from "primeng/keyfilter";
+import {InputTextareaModule} from "primeng/inputtextarea";
 
 interface Column {
   field: string;
@@ -43,7 +44,8 @@ interface ExportColumn {
     NgIf,
     SpeedDialModule,
     CalendarModule,
-    KeyFilterModule
+    KeyFilterModule,
+    InputTextareaModule
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css',
@@ -60,6 +62,7 @@ export class TableComponent implements OnInit {
   totalRecords: number = 0;
   transactionDialog: boolean = false;
   submitted: boolean = false;
+  loading: boolean = true;
   constructor(private transactionService: TransactionService, private messageService: MessageService, private confirmationService: ConfirmationService) {}
 
   ngOnInit() {
@@ -97,6 +100,7 @@ export class TableComponent implements OnInit {
     this.transactionService.getAll().subscribe((response: any) => {
       this.transactions = response;
       this.totalRecords = this.transactions.length;
+      this.loading = false;
     });
     this.cols = [
       { field: 'id', header: 'Id' },
@@ -108,7 +112,7 @@ export class TableComponent implements OnInit {
       { field: 'storeyRange', header: 'Storey Range' },
       { field: 'floorAreaSqm', header: 'Floor Area Sqm' },
       { field: 'flatModel', header: 'Flat Model' },
-      { field: 'leaseCommenceDate', header: 'Lease Commence Date' },
+      { field: 'leaseCommenceDate', header: 'Lease Commence' },
       { field: 'resalePrice', header: 'Resale Price' }
     ];
     this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));

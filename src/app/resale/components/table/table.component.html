@@ -2,18 +2,17 @@
   <p-toast></p-toast>
   <!--
   <p-toolbar styleClass="mb-4 gap-2">
-    <ng-template pTemplate="left">
-      <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-      <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
-    </ng-template>
-
     <ng-template pTemplate="right">
-      <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-      <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+      <p-fileUpload mode="basic" label="Import" chooseLabel="Import" class="mr-2 inline-block"
+                    [url]="'http://localhost/api/v1/csv/upload'"
+                    [maxFileSize]="1000000" >
+      </p-fileUpload>
     </ng-template>
   </p-toolbar>
--->
-  <p-table #dt [columns]="cols" [value]="transactions" dataKey="id" [tableStyle]="{ 'min-width': '50rem' }"
+  -->
+  <p-table #dt1 [columns]="cols" [value]="transactions" dataKey="id" [tableStyle]="{ 'min-width': '50rem' }"
+           [rowHover]="true"
+           [loading]="loading"
            (onPage)="onPageChange($event)"
            [paginator]="true"
            [first]="first"
@@ -28,9 +27,9 @@
         <th *ngFor="let col of columns">
           {{ col.header }}
         </th>
+        <th>Actions</th>
       </tr>
     </ng-template>
-
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
         <td *ngFor="let col of columns">
@@ -43,7 +42,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="summary">
+    <ng-template pTemplate="summary" class="custom-summary">
       <div class="flex align-items-center justify-content-between">In total there are {{ transactions ? transactions.length : 0 }} transactions.</div>
     </ng-template>
   </p-table>
@@ -56,72 +55,64 @@
 
 <p-dialog [(visible)]="transactionDialog" [style]="{ width: '500px' }" header="Transaction Details" [modal]="true" styleClass="p-fluid">
   <ng-template pTemplate="content">
-    <div class="field">
-      <label for="month">Month</label>
-      <p-calendar id="month" [(ngModel)]="transaction.month" view="month" dateFormat="yy-mm"></p-calendar>
+    <div class="formgrid grid">
+      <div class="field col">
+        <label for="month">Month</label>
+        <p-calendar id="month" [(ngModel)]="transaction.month" view="month" dateFormat="yy-mm"></p-calendar>
+      </div>
+      <div class="field col">
+        <label for="year">Lease Commence Date</label>
+        <p-calendar id="year" [(ngModel)]="transaction.leaseCommenceDate" view="year" dateFormat="yy"></p-calendar>
+      </div>
     </div>
+
     <div class="field">
       <label for="town">Town</label>
       <input type="text" pInputText id="town" [(ngModel)]="transaction.town" required/>
       <small class="p-error" *ngIf="submitted && !transaction.town">Town is required.</small>
     </div>
     <div class="field">
+      <label for="streetName">Street Name</label>
+      <textarea id="streetName" pInputTextarea [(ngModel)]="transaction.streetName" required rows="2" cols="20"></textarea>
+      <small class="p-error" *ngIf="submitted && !transaction.streetName">Street Name is required.</small>
+    </div>
+
+    <div class="formgrid grid">
+      <div class="field col">
+        <label for="block">Block</label>
+        <input type="text" pInputText id="block" [(ngModel)]="transaction.block" required />
+        <small class="p-error" *ngIf="submitted && !transaction.block">Block is required.</small>
+      </div>
+      <div class="field col">
+        <label for="storeyRange">Storey Range</label>
+        <input type="text" pInputText id="storeyRange" [(ngModel)]="transaction.storeyRange" required />
+        <small class="p-error" *ngIf="submitted && !transaction.storeyRange">Storey Range is required.</small>
+      </div>
+    </div>
+
+    <div class="field">
       <label for="flatType">Flat Type</label>
       <input type="text" pInputText id="flatType" [(ngModel)]="transaction.flatType" required />
       <small class="p-error" *ngIf="submitted && !transaction.flatType">Flat Type is required.</small>
-    </div>
-    <div class="field">
-      <label for="block">Block</label>
-      <input type="text" pInputText id="block" [(ngModel)]="transaction.block" required />
-      <small class="p-error" *ngIf="submitted && !transaction.block">Block is required.</small>
-    </div>
-    <div class="field">
-      <label for="streetName">Street Name</label>
-      <input type="text" pInputText id="streetName" [(ngModel)]="transaction.streetName" required />
-      <small class="p-error" *ngIf="submitted && !transaction.streetName">Street Name is required.</small>
-    </div>
-    <div class="field">
-      <label for="storeyRange">Storey Range</label>
-      <input type="text" pInputText id="storeyRange" [(ngModel)]="transaction.storeyRange" required />
-      <small class="p-error" *ngIf="submitted && !transaction.storeyRange">Storey Range is required.</small>
-    </div>
-    <div class="field">
-      <label for="floorAreaSqm">Floor Area Sqm</label>
-      <input type="number" pInputText id="floorAreaSqm" [(ngModel)]="transaction.floorAreaSqm" pattern="^[0-9]+$" required />
-      <small class="p-error" *ngIf="submitted && !transaction.floorAreaSqm">Floor area sqm must be a positive integer.</small>
     </div>
     <div class="field">
       <label for="flatModel">Flat Model</label>
       <input type="text" pInputText id="flatModel" [(ngModel)]="transaction.flatModel" required />
       <small class="p-error" *ngIf="submitted && !transaction.flatModel">Flat Model is required.</small>
     </div>
-    <div class="field">
-      <label for="year">Lease Commence Date</label>
-      <p-calendar id="year" [(ngModel)]="transaction.leaseCommenceDate" view="year" dateFormat="yy"></p-calendar>
-    </div>
-    <div class="field">
-      <label for="resalePrice">Resale Price</label>
-      <input type="number" pInputText id="resalePrice" [(ngModel)]="transaction.resalePrice" pattern="^[1-9]\d*$" required />
-      <small class="p-error" *ngIf="submitted && !transaction.resalePrice">Resale price must be positive integer.</small>
-    </div>
-    <!--
-    <div class="field">
-      <label for="description">Description</label>
-      <textarea id="description" pInputTextarea [(ngModel)]="transaction.description" required rows="3" cols="20"></textarea>
-    </div>
--->
-<!--
+
     <div class="formgrid grid">
       <div class="field col">
-        <label for="price">Price</label>
-        <p-inputNumber id="price" [(ngModel)]="transaction.price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+        <label for="floorAreaSqm">Floor Area Sqm</label>
+        <input type="number" pInputText id="floorAreaSqm" [(ngModel)]="transaction.floorAreaSqm" pattern="^[0-9]+$" required />
+        <small class="p-error" *ngIf="submitted && !transaction.floorAreaSqm">Floor area sqm must be a positive integer.</small>
       </div>
       <div class="field col">
-        <label for="quantity">Quantity</label>
-        <p-inputNumber id="quantity" [(ngModel)]="transaction.quantity"></p-inputNumber>
+        <label for="resalePrice">Resale Price</label>
+        <input type="number" pInputText id="resalePrice" [(ngModel)]="transaction.resalePrice" pattern="^[1-9]\d*$" required />
+        <small class="p-error" *ngIf="submitted && !transaction.resalePrice">Resale price must be positive integer.</small>
       </div>
     </div>
-    -->
   </ng-template>
 
   <ng-template pTemplate="footer">
