@@ -1,2 +1,11 @@
-<app-toolbar></app-toolbar>
-<app-table></app-table>
+<app-table
+  [transactions]="transactions"
+  [columns]="columns"
+  [loading]="loading"
+  [totalRecords]="totalRecords">
+</app-table>
+
+<app-speed-dial
+  [transactions]="transactions"
+  [columns]="columns">
+</app-speed-dial>
