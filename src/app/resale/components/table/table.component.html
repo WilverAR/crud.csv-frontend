@@ -1,15 +1,7 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
 <div class="container">
-  <p-toast></p-toast>
-  <!--
-  <p-toolbar styleClass="mb-4 gap-2">
-    <ng-template pTemplate="right">
-      <p-fileUpload mode="basic" label="Import" chooseLabel="Import" class="mr-2 inline-block"
-                    [url]="'http://localhost/api/v1/csv/upload'"
-                    [maxFileSize]="1000000" >
-      </p-fileUpload>
-    </ng-template>
-  </p-toolbar>
-  -->
   <p-table #dt [columns]="columns" [value]="transactions" dataKey="id" [tableStyle]="{ 'min-width': '50rem' }"
            [scrollable]="true"
            scrollHeight="500px"
@@ -40,7 +32,7 @@
         </td>
         <td>
           <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(rowData)"></button>
-          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(rowData)"></button>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(rowData.id, $event)"></button>
         </td>
       </tr>
     </ng-template>
