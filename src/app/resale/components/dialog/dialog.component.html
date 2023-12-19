@@ -1,4 +1,7 @@
-<p-dialog [(visible)]="transactionDialog" [style]="{ width: '500px' }" header="Transaction Details" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="transactionDialog" [style]="{ width: '500px' }" header="Transaction Details" [modal]="true"
+          styleClass="p-fluid"
+          (onHide)="onDialogHide()">
+
   <ng-template pTemplate="content">
     <div class="formgrid grid">
       <div class="field col">
@@ -50,18 +53,18 @@
       <div class="field col">
         <label for="floorAreaSqm">Floor Area Sqm</label>
         <input type="number" pInputText id="floorAreaSqm" [(ngModel)]="transaction.floorAreaSqm" pattern="^[0-9]+$" required />
-        <small class="p-error" *ngIf="submitted && !transaction.floorAreaSqm">Floor area sqm must be a positive integer.</small>
+        <small class="p-error" *ngIf="submitted && !transaction.floorAreaSqm">Must be a positive integer.</small>
       </div>
       <div class="field col">
         <label for="resalePrice">Resale Price</label>
         <input type="number" pInputText id="resalePrice" [(ngModel)]="transaction.resalePrice" pattern="^[1-9]\d*$" required />
-        <small class="p-error" *ngIf="submitted && !transaction.resalePrice">Resale price must be positive integer.</small>
+        <small class="p-error" *ngIf="submitted && !transaction.resalePrice">Must be positive integer.</small>
       </div>
     </div>
   </ng-template>
 
   <ng-template pTemplate="footer">
     <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct($event)"></button>
   </ng-template>
 </p-dialog>
