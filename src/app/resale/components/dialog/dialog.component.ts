@@ -45,7 +45,7 @@ export class DialogComponent {
     this.onDisplay.emit(false);
     this.transaction = <Transaction>{};
   }
-  saveProduct(event: Event) {
+  saveTransaction(event: Event) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Are you sure that you want to proceed?',

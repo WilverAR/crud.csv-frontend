@@ -42,7 +42,7 @@ export class SpeedDialComponent implements OnInit {
     this.exportColumns = this.columns.map((col) => ({ title: col.header, dataKey: col.field }));
   }
   exportExcel() {
-    this.messageService.add({severity:'success', summary: 'Success', detail: 'Transactions Exported'});
+    this.messageService.add({severity:'success', summary: 'Loading', detail: 'Exporting transactions...'});
     import('xlsx').then((xlsx) => {
       const worksheet = xlsx.utils.json_to_sheet(this.transactions);
       const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };

@@ -10,6 +10,8 @@ export class Transaction {
   flatModel: string;
   leaseCommenceDate: string;
   resalePrice: number;
+  createdAt: Date;
+  updatedAt: Date;
   constructor() {
     this.id = 0;
     this.month = '';
@@ -22,5 +24,7 @@ export class Transaction {
     this.flatModel = '';
     this.leaseCommenceDate = '';
     this.resalePrice = 0;
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
   }
 }

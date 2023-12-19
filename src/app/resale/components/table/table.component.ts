@@ -58,11 +58,11 @@ export class TableComponent {
   onPageChange(event: PaginatorState) {
     this.first = event.first || 0;
   }
-  editProduct(transaction: any) {
+  editTransaction(transaction: any) {
     this.transaction = {...transaction};
     this.transactionDialog = true;
   }
-  deleteProduct(transactionId: number, event: Event) {
+  deleteTransaction(transactionId: number, event: Event) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Do you want to delete this record?',
