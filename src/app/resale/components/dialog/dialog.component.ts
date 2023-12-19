@@ -60,7 +60,7 @@ export class DialogComponent {
 
         if (this.isValidForm()) {
           if (this.transaction.id) {
-            this.transactionService.update(this.transaction.id, this.transaction).subscribe((response: any) => {
+            this.transactionService.update(this.transaction.id, this.transaction).subscribe(() => {
               this.transactionService.getAll().subscribe();
               this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Transaction Updated', life: 3000 });
             });

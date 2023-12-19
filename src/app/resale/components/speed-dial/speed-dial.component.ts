@@ -36,7 +36,7 @@ export class SpeedDialComponent implements OnInit {
   item!: MenuItem[];
   exportColumns!: ExportColumn[];
 
-  constructor(private messageService: MessageService, private transactionService: TransactionService) { }
+  constructor(private messageService: MessageService) { }
 
   ngOnInit() {
     this.item = [
@@ -48,9 +48,9 @@ export class SpeedDialComponent implements OnInit {
         }
       },
       {
-        icon: 'pi pi-trash',
+        icon: 'pi pi-file',
         command: () => {
-          this.messageService.add({ severity: 'error', summary: 'Delete', detail: 'Data Deleted' });
+          this.exportPdf();
         }
       },
       {
