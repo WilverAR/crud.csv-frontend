@@ -2,7 +2,7 @@
 <p-confirmDialog></p-confirmDialog>
 
 <div class="container">
-  <p-table [columns]="columns" [value]="transactions" [tableStyle]="{ 'min-width': '50rem' }"
+  <p-table [columns]="columns" [value]="transactions" [tableStyle]="{ 'min-width': '50rem' }" scrollHeight="500px"
            dataKey="id"
            (onPage)="onPageChange($event)"
            [paginator]="true"
