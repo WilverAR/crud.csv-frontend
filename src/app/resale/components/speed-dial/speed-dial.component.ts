@@ -4,7 +4,6 @@ import {ToastModule} from "primeng/toast";
 import {MenuItem, MessageService} from "primeng/api";
 import {Transaction} from "../../model/transaction";
 import FileSaver from "file-saver";
-import {TransactionService} from "../../services/transaction.service";
 
 
 interface Column {
@@ -73,7 +72,7 @@ export class SpeedDialComponent implements OnInit {
   }
   private exportPdf() {
     import('jspdf').then((jsPDF) => {
-      import('jspdf-autotable').then((x) => {
+      import('jspdf-autotable').then(() => {
         const doc = new jsPDF.default('p', 'px', 'a4');
         (doc as any).autoTable(this.exportColumns, this.transactions);
         doc.save('products.pdf');
