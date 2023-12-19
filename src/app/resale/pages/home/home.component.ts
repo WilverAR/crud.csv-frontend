@@ -42,8 +42,8 @@ export class HomeComponent implements OnInit {
   }
   private getAllTransactions() {
     this.transactionService.getAll().subscribe(() => {
-      this.loading = false;
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Loaded', life: 3000 });
+      this.loading = false;
     });
     this.columns = [
       { field: 'id', header: 'Id' },

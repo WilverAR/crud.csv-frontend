@@ -2,23 +2,18 @@
 <p-confirmDialog></p-confirmDialog>
 
 <div class="container">
-  <p-table #dt [columns]="columns" [value]="transactions" dataKey="id" [tableStyle]="{ 'min-width': '50rem' }"
-           [scrollable]="true"
-           scrollHeight="500px"
-           styleClass="mt-3"
-           [rowHover]="true"
-           [loading]="loading"
-<div class="container">
-  <p-table [columns]="cols" [value]="transactions" [tableStyle]="{ 'min-width': '50rem' }"
+  <p-table [columns]="columns" [value]="transactions" [tableStyle]="{ 'min-width': '50rem' }"
+           dataKey="id"
            (onPage)="onPageChange($event)"
            [paginator]="true"
            [first]="first"
            [rows]="rows"
+           [loading]="loading"
+           [rowHover]="true"
            [totalRecords]="totalRecords"
            [rowsPerPageOptions]="[5, 10, 15]"
            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
            [showCurrentPageReport]="true">
-           [rowsPerPageOptions]="[5, 10, 15]">
 
     <ng-template pTemplate="header" let-columns>
       <tr>
@@ -26,8 +21,6 @@
           {{ col.header }}
         </th>
         <th>Actions</th>
-      </tr>
-    </ng-template>
       </tr>
     </ng-template>
 
@@ -59,7 +52,3 @@
   [submitted]="submitted"
   [transaction]="transaction">
 </app-dialog>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>

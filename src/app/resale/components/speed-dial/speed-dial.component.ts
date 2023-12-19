@@ -49,7 +49,7 @@ export class SpeedDialComponent implements OnInit {
       {
         icon: 'pi pi-file',
         command: () => {
-          this.exportPdf();
+          //this.exportPdf();
         }
       },
       {
