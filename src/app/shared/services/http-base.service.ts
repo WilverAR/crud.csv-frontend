@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
-import { catchError, Observable, retry, throwError } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
+import {BehaviorSubject, Observable, retry, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpBaseService<T> {
+  private dataSubject = new BehaviorSubject<T[]>([]);
+  data$ = this.dataSubject.asObservable();
+
   basePath: string = environment.serverBasePath;
   resourceEndpoint: string = '/resources';
 
@@ -30,9 +34,12 @@ export class HttpBaseService<T> {
     return this.basePath + this.resourceEndpoint;
   }
 
-  getAll(): Observable<T> {
+  getAll(): Observable<T[]> {
     console.log('Getting all resources from server.');
-    return this.http.get<T>(this.resourcePath(), this.httpOptions).pipe(retry(2), catchError(this.handleError));
+    return this.http.get<T[]>(this.resourcePath(), this.httpOptions).pipe(
+      tap(data => this.dataSubject.next(data)),
+      catchError(this.handleError)
+    );
   }
 
   getOne(id: number): Observable<T> {

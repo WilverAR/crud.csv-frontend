@@ -1,17 +1,26 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
 <div class="container">
-  <p-table [columns]="cols" [value]="transactions" [tableStyle]="{ 'min-width': '50rem' }"
+  <p-table [columns]="columns" [value]="transactions" [tableStyle]="{ 'min-width': '50rem' }" scrollHeight="500px"
+           dataKey="id"
            (onPage)="onPageChange($event)"
            [paginator]="true"
            [first]="first"
            [rows]="rows"
+           [loading]="loading"
+           [rowHover]="true"
            [totalRecords]="totalRecords"
-           [rowsPerPageOptions]="[5, 10, 15]">
+           [rowsPerPageOptions]="[5, 10, 15]"
+           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+           [showCurrentPageReport]="true">
 
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th *ngFor="let col of columns">
           {{ col.header }}
         </th>
+        <th>Actions</th>
       </tr>
     </ng-template>
 
@@ -20,9 +29,26 @@
         <td *ngFor="let col of columns">
           {{ rowData[col.field] }}
         </td>
+        <td>
+          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(rowData)"></button>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(rowData.id, $event)"></button>
+        </td>
       </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary" class="custom-summary">
+      <div class="flex align-items-center justify-content-between">In total there are {{ transactions ? transactions.length : 0 }} transactions.</div>
+    </ng-template>
+    <ng-template pTemplate="paginatorleft">
+      <p-button type="button" icon="pi pi-plus" (click)="onDisplay()" [outlined]="true"></p-button>
     </ng-template>
   </p-table>
 </div>
 
-
+<app-dialog
+  (onDisplay)="onDisplayDialog($event)"
+  (onSubmitted)="onSubmittedDialog($event)"
+  [transactionDialog]="transactionDialog"
+  [submitted]="submitted"
+  [transaction]="transaction">
+</app-dialog>
