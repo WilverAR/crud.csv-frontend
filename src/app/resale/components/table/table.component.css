@@ -1,6 +1,6 @@
 .container {
   width: 100vw;
-  height: 85%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,20 +10,22 @@ p-table {
   border-radius: 10px;
   width: 85%;
 }
+
 p-table td {
   /*font-size: 14px;*/
 }
-
 
 ::ng-deep .p-paginator {
   border-radius: 0;
   margin-top: 10px;
 }
 
-
-
 .p-button-success, .p-button-warning {
   margin-right: 5px;
   margin-bottom: 5px;
 }
 
+::ng-deep .p-paginator {
+  border-radius: 0 0 10px 10px;
+  margin-top: 10px;
+}

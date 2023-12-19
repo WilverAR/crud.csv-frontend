@@ -19,7 +19,6 @@ export class HttpBaseService<T> {
       'Content-Type': 'application/json'
     })
   };
-
   constructor(private http: HttpClient) { }
 
   handleError(error: HttpErrorResponse) {
@@ -31,7 +30,6 @@ export class HttpBaseService<T> {
     }
     return throwError('Something bad happened; please try again later.');
   }
-
   private resourcePath() {
     return this.basePath + this.resourceEndpoint;
   }

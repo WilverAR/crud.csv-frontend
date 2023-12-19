@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
-import {TableModule} from "primeng/table";
 import {NgForOf, NgIf} from "@angular/common";
+import {SharedModule} from "primeng/api";
+import {TableModule} from "primeng/table";
 import {PaginatorModule, PaginatorState} from "primeng/paginator";
 import {ToastModule} from "primeng/toast";
 import {ButtonModule} from "primeng/button";
@@ -25,6 +26,7 @@ interface ExportColumn {
   selector: 'app-table',
   standalone: true,
   imports: [
+    SharedModule,
     TableModule,
     NgForOf,
     PaginatorModule,
@@ -33,7 +35,8 @@ interface ExportColumn {
     RippleModule,
     NgIf,
     DialogComponent,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    RippleModule
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
@@ -52,12 +55,11 @@ export class TableComponent {
   transaction!: Transaction;
 
   constructor(private transactionService: TransactionService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
-
   onPageChange(event: PaginatorState) {
     this.first = event.first || 0;
   }
   editProduct(transaction: any) {
-    this.transaction = { ...transaction };
+    this.transaction = {...transaction};
     this.transactionDialog = true;
   }
   deleteProduct(transactionId: number, event: Event) {
@@ -66,15 +68,20 @@ export class TableComponent {
       message: 'Do you want to delete this record?',
       header: 'Delete Confirmation',
       icon: 'pi pi-info-circle',
-      acceptButtonStyleClass:"p-button-danger p-button-text",
-      rejectButtonStyleClass:"p-button-text p-button-text",
-      acceptIcon:"none",
-      rejectIcon:"none",
+      acceptButtonStyleClass: "p-button-danger p-button-text",
+      rejectButtonStyleClass: "p-button-text p-button-text",
+      acceptIcon: "none",
+      rejectIcon: "none",
 
       accept: () => {
         this.transactionService.delete(transactionId).subscribe(() => {
           this.transactionService.getAll().subscribe();
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Transaction Deleted', life: 3000 });
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'Transaction Deleted',
+            life: 3000
+          });
         });
       },
       reject: () => {

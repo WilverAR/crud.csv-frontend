@@ -8,6 +8,8 @@
            styleClass="mt-3"
            [rowHover]="true"
            [loading]="loading"
+<div class="container">
+  <p-table [columns]="cols" [value]="transactions" [tableStyle]="{ 'min-width': '50rem' }"
            (onPage)="onPageChange($event)"
            [paginator]="true"
            [first]="first"
@@ -16,6 +18,7 @@
            [rowsPerPageOptions]="[5, 10, 15]"
            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
            [showCurrentPageReport]="true">
+           [rowsPerPageOptions]="[5, 10, 15]">
 
     <ng-template pTemplate="header" let-columns>
       <tr>
@@ -25,6 +28,9 @@
         <th>Actions</th>
       </tr>
     </ng-template>
+      </tr>
+    </ng-template>
+
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
         <td *ngFor="let col of columns">
@@ -53,4 +59,7 @@
   [submitted]="submitted"
   [transaction]="transaction">
 </app-dialog>
-
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
