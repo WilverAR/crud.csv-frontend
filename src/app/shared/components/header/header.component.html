@@ -1,11 +1,8 @@
-
-<div class="card">
-  <p-menubar [model]="items">
+<div class="container">
+  <p-toolbar styleClass="bg-gray-900 shadow-2" [style]="{ 'border-radius': '3rem', 'background-image': 'linear-gradient(to right, var(--bluegray-500), var(--bluegray-800))' }">
     <ng-template pTemplate="start">
-      <img src="https://primefaces.org/cdn/primeng/images/primeng.svg" height="40" class="mr-2" />
+      <img src="https://primefaces.org/cdn/primeng/images/primeng.svg"  alt=""/>
+      <span class="font-bold text-bluegray-50">&nbsp;Manage Resales</span>
     </ng-template>
-    <ng-template pTemplate="end">
-      <input type="text" pInputText placeholder="Search" class="w-full" />
-    </ng-template>
-  </p-menubar>
+  </p-toolbar>
 </div>
