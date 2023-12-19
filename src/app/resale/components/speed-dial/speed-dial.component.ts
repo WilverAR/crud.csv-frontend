@@ -5,7 +5,6 @@ import {MenuItem, MessageService} from "primeng/api";
 import {Transaction} from "../../model/transaction";
 import FileSaver from "file-saver";
 import {TransactionService} from "../../services/transaction.service";
-import {DialogComponent} from "../dialog/dialog.component";
 
 
 interface Column {
@@ -23,21 +22,22 @@ interface ExportColumn {
   imports: [
     SpeedDialModule,
     ToastModule,
-    DialogComponent
   ],
   templateUrl: './speed-dial.component.html',
   styleUrl: './speed-dial.component.css'
 })
 export class SpeedDialComponent implements OnInit {
-  item!: MenuItem[];
-  exportColumns!: ExportColumn[];
-  @Input() columns: Column[] = [];
   @Input() transactions: Transaction[] = [];
+  @Input() columns: Column[] = [];
 
   @Output() transactionDialog: boolean = false;
   @Output() submitted: boolean = false;
 
-  constructor(private transactionService: TransactionService, private messageService: MessageService) {}
+  item!: MenuItem[];
+  exportColumns!: ExportColumn[];
+
+  constructor(private messageService: MessageService, private transactionService: TransactionService) { }
+
   ngOnInit() {
     this.item = [
       {
@@ -69,8 +69,7 @@ export class SpeedDialComponent implements OnInit {
     this.exportColumns = this.columns.map((col) => ({ title: col.header, dataKey: col.field }));
   }
   private importFileCSV() {
-    //this.submitted = false;
-    //this.transactionDialog = true;
+
   }
   private exportPdf() {
     import('jspdf').then((jsPDF) => {
