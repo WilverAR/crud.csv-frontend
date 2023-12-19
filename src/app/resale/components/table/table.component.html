@@ -40,7 +40,7 @@
       <div class="flex align-items-center justify-content-between">In total there are {{ transactions ? transactions.length : 0 }} transactions.</div>
     </ng-template>
     <ng-template pTemplate="paginatorleft">
-      <p-button type="button" icon="pi pi-plus" styleClass="p-button-text" (click)="onDisplay()"></p-button>
+      <p-button type="button" icon="pi pi-plus" (click)="onDisplay()" [outlined]="true"></p-button>
     </ng-template>
   </p-table>
 </div>

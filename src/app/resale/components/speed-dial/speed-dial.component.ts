@@ -38,48 +38,11 @@ export class SpeedDialComponent implements OnInit {
   constructor(private messageService: MessageService) { }
 
   ngOnInit() {
-    this.item = [
-      {
-        icon: 'pi pi-download',
-        target:'_blank',
-        command: () => {
-          this.exportExcel();
-        }
-      },
-      {
-        icon: 'pi pi-file',
-        command: () => {
-          //this.exportPdf();
-        }
-      },
-      {
-        icon: 'pi pi-upload',
-        command: () => {
-          this.importFileCSV();
-        }
-      },
-      {
-        icon: 'pi pi-spin pi-refresh',
-        command: () => {
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Updated' });
-        }
-      },
-    ];
+    this.item = [];
     this.exportColumns = this.columns.map((col) => ({ title: col.header, dataKey: col.field }));
   }
-  private importFileCSV() {
-
-  }
-  private exportPdf() {
-    import('jspdf').then((jsPDF) => {
-      import('jspdf-autotable').then(() => {
-        const doc = new jsPDF.default('p', 'px', 'a4');
-        (doc as any).autoTable(this.exportColumns, this.transactions);
-        doc.save('products.pdf');
-      });
-    });
-  }
-  private exportExcel() {
+  exportExcel() {
+    this.messageService.add({severity:'success', summary: 'Success', detail: 'Transactions Exported'});
     import('xlsx').then((xlsx) => {
       const worksheet = xlsx.utils.json_to_sheet(this.transactions);
       const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
