@@ -1,27 +1,37 @@
-# CrudCsv
+# Frontend of the project CRUD
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.7.
+This is the repository for the frontend of the CRUD project, responsible for the management of the resales.
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Requirements of the project
 
-## Code scaffolding
+- [Node.js](https://nodejs.org/es/) (v20.10.0)
+- [Npm](https://www.npmjs.com/) (v10.2.4)
+- [Angular CLI](https://angular.io/cli) (v17.0.7)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Instructions of configuration - Local
 
-## Build
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/WilverAR/crud.csv-frontend.git
+   ```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+2. **Navigate to the project folder**
+   ```bash
+   cd crud.csv-frontend
+   ```
 
-## Running unit tests
+3. **Install project dependencies**
+   ```bash
+   npm install
+   ```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+4. **Run the project**
+   ```bash
+   ng serve
+   ```
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+5. **Access the application**
+   ```bash
+   http://localhost:4200/
+   ```
