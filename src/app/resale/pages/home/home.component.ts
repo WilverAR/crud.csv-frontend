@@ -1,11 +1,8 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TableComponent} from "../../components/table/table.component";
-import {TableModule} from "primeng/table";
-import {DialogComponent} from "../../components/dialog/dialog.component";
 import {Transaction} from "../../model/transaction";
-import {ConfirmationService, MenuItem, MessageService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 import {TransactionService} from "../../services/transaction.service";
-import {SpeedDialModule} from "primeng/speeddial";
 import {ToastModule} from "primeng/toast";
 import {SpeedDialComponent} from "../../components/speed-dial/speed-dial.component";
 
@@ -20,9 +17,6 @@ interface Column {
   standalone: true,
   imports: [
     TableComponent,
-    TableModule,
-    DialogComponent,
-    SpeedDialModule,
     ToastModule,
     SpeedDialComponent
   ],
@@ -33,19 +27,23 @@ interface Column {
 export class HomeComponent implements OnInit {
   transactions: Transaction[] = [];
   columns: Column[] = [];
-  totalRecords: number = 0;
   loading: boolean = true;
 
   constructor(private transactionService: TransactionService, private messageService: MessageService) { }
 
   ngOnInit() {
+    this.loadData();
     this.getAllTransactions();
   }
+  private loadData() {
+    this.transactionService.data$.subscribe(data => {
+      this.transactions = data;
+    });
+  }
   private getAllTransactions() {
-    this.transactionService.getAll().subscribe((response: any) => {
-      this.transactions = response;
-      this.totalRecords = this.transactions.length;
+    this.transactionService.getAll().subscribe((data) => {
       this.loading = false;
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Loaded', life: 3000 });
     });
     this.columns = [
       { field: 'id', header: 'Id' },
@@ -60,6 +58,5 @@ export class HomeComponent implements OnInit {
       { field: 'leaseCommenceDate', header: 'Lease Commence' },
       { field: 'resalePrice', header: 'Resale Price' }
     ];
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data Loaded', life: 3000 });
   }
 }
