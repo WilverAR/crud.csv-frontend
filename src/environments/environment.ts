@@ -1,3 +1,3 @@
 export const environment = {
-  serverBasePath: undefined
+  serverBasePath: "https://app-b.azurewebsites.net/api/v1"
 };
