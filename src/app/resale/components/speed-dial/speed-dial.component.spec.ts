@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SpeedDialComponent } from './speed-dial.component';
+import { MessageService } from "primeng/api";
 
 describe('SpeedDialComponent', () => {
   let component: SpeedDialComponent;
@@ -8,10 +9,10 @@ describe('SpeedDialComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SpeedDialComponent]
+      providers: [MessageService], // Asegúrate de incluir MessageService aquí
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(SpeedDialComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

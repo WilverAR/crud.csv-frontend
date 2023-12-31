@@ -34,7 +34,7 @@ import {SpeedDialComponent} from "../speed-dial/speed-dial.component";
 export class DialogComponent {
   @Input() transactionDialog: boolean = true;
   @Input() submitted: boolean = true;
-  @Input() transaction!: Transaction;
+  @Input() transaction: Transaction = <Transaction>{};
   @Output() onDisplay = new EventEmitter<boolean>();
   @Output() onSubmitted = new EventEmitter<boolean>();
 

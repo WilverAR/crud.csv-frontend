@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DialogComponent } from './dialog.component';
+import { TransactionService } from "../../services/transaction.service";
+import { HttpClientModule } from "@angular/common/http";
+import { ConfirmationService, MessageService } from "primeng/api";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 describe('DialogComponent', () => {
   let component: DialogComponent;
@@ -8,10 +12,15 @@ describe('DialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DialogComponent]
+      imports: [HttpClientModule, DialogComponent, BrowserAnimationsModule],
+      providers: [
+        TransactionService,
+        MessageService,
+        ConfirmationService,
+      ],
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(DialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
