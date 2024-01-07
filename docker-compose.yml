@@ -1,0 +1,15 @@
+services:
+  crud-csvapp:
+    container_name: crud-csvappcontainer
+    build: .
+    image: crud-csvapp:v1
+    ports:
+      - 80:80
+    expose:
+      - 80
+    networks:
+      - internalnet
+
+networks:
+  internalnet:
+    driver: bridge
