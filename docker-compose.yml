@@ -1,8 +1,8 @@
 services:
   crud-csvapp:
-    container_name: crud-csvappcontainer
+    container_name: crud-csv-app-container
     build: .
-    image: crud-csvapp:v1
+    image: crud-csv-app:latest
     ports:
       - 80:80
     expose:
