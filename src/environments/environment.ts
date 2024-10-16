@@ -1,3 +1,3 @@
 export const environment = {
-  serverBasePath: "https://app-b.azurewebsites.net/api/v1"
+  serverBasePath: "https://csvcrud.azurewebsites.net/api/v1"
 };
